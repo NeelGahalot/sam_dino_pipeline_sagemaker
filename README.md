@@ -28,5 +28,6 @@ Each image is associated with a numeric offset, and is fetched using the followi
     }
   ]
 }
+```
 
 The 100,000 images processed to a csv file make use of startified sampling to ensure that we have far representation of the production. One can use the stratified sampling file to obtain a fair sampling.
