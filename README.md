@@ -1,0 +1,24 @@
+# Segmentation Pipeline using Grounding Dino and SAM
+
+SAM does not come with zero shot object detection by default and needs bounding with/without input points. WE leverage Grounding Dino for getting these bounding boxes and then prompt SAM with those boxes. The segmentation is done at scale, processing about 100,000 images. We use thesholding to discard masks of lower scores. The resulting psuedo annotations are stored on s3 at treetracker-training-images/production_psuedo_labelling_100000/
+
+This provides us sufficient data to train a custom [AutoSAM2](https://github.com/NeelGahalot/autosam-2).
+
+## Pipeline Architecture
+The pipeline consists of several key components:
+
+- **AsyncImageLoader**: Downloads images asynchronously from URLs  
+- **GroundingDINO**: Detects plants in images using zero-shot object detection  
+- **SAM2**: Creates high-quality segmentation masks for detected plants  
+- **S3 Uploader**: Uploads processed images and masks to S3
+
+## Stratified Sampling from a Large-Scale Image Dataset
+#  Background
+
+The production image dataset consists of over 15 million images, hosted behind a REST API. Due to the size of the dataset, it is not feasible to load all data at once, so we access it using offset-based pagination through API queries. Each API call retrieves metadata—including the image_url—for a small number of samples.
+
+How Image URLs Are Accessed
+Each image is associated with a numeric offset, and is fetched using the following query pattern:
+<pre> ```json { "trees": [ { "image_url": "https://bucket.storage.com/images/img1234.jpg", "label": "banana" } ] } ``` </pre>
+
+The 100,000 images processed to a csv file make use of stritified sampling to ensure that we have far representation of the production. One can use the stratified sampling file to obtain a fair sampling.
