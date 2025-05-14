@@ -2,7 +2,7 @@
 
 SAM does not come with zero shot object detection by default and needs bounding with/without input points. WE leverage Grounding Dino for getting these bounding boxes and then prompt SAM with those boxes. The segmentation is done at scale, processing about 100,000 images. We use thesholding to discard masks of lower scores. The resulting psuedo annotations are stored on s3 at treetracker-training-images/production_psuedo_labelling_100000/
 
-This provides us sufficient data to train a custom [AutoSAM2](https://github.com/NeelGahalot/autosam-2).
+This provides us sufficient data to train a custom [AutoSAM2](https://github.com/NeelGahalot/autosam-2). Details of the training run can be found on s3 as well - sagemaker-segmentation-neel/sam2_dino_psuedo_annotation_pipeline/
 
 ## Pipeline Architecture
 The pipeline consists of several key components:
@@ -19,6 +19,14 @@ The production image dataset consists of over 15 million images, hosted behind a
 
 How Image URLs Are Accessed
 Each image is associated with a numeric offset, and is fetched using the following query pattern:
-<pre> ```json { "trees": [ { "image_url": "https://bucket.storage.com/images/img1234.jpg", "label": "banana" } ] } ``` </pre>
+```json
+{
+  "trees": [
+    {
+      "image_url": "https://bucket.storage.com/images/img1234.jpg",
+      "label": "banana"
+    }
+  ]
+}
 
-The 100,000 images processed to a csv file make use of stritified sampling to ensure that we have far representation of the production. One can use the stratified sampling file to obtain a fair sampling.
+The 100,000 images processed to a csv file make use of startified sampling to ensure that we have far representation of the production. One can use the stratified sampling file to obtain a fair sampling.
