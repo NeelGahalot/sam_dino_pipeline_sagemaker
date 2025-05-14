@@ -37,3 +37,6 @@ The 100,000 images processed to a csv file make use of startified sampling to en
 
 ## Exif Tag, Orientation and Automatic Rotations
 THe Orientation key in the exif tags with certain values 3,6, and 8 (I think) can cause automatic rotations; your dataset may contain inconsistent rotations, leading to noisy training data and poor performance. Refer to the the exif python files that can  take care of this and would be a worthwhile addition to the pipeline. For the curent procesing however, I did not encounter any random rotations. 
+
+## Benchmarking
+Refer to the benhcmarking scripts in sam2 folder to find the optmial batch size for sam2 and dino based on rigorous testing. Neither of them show a significant boost in image throughput when processed in higher batch sizes. A more rigorous testing could potentially yield even better results. 
