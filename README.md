@@ -6,7 +6,7 @@ This provides us sufficient data to train a custom [AutoSAM2](https://github.com
 
 ## Pipeline Architecture
 <p align="center">
-  <img src="readme_images/pipeline" alt="Pipeline Architecture" width="1000"/>
+  <img src="readme_images/pipeline.png" alt="Pipeline Architecture" width="1000"/>
 </p>
 The pipeline consists of several key components:
 
